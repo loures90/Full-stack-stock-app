@@ -11,7 +11,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { Util } from 'src/util/util';
+import { Util } from '../util/util';
 import { AddProductModel } from '../domain/usecases/add-product';
 import { AddProductService } from '../services/add-product.service';
 
@@ -25,7 +25,7 @@ export class ProductController {
   @Post()
   async add(@Body() data: AddProductModel, @Res() res: Response) {
     try {
-      const requiredParams = ['name', 'quantity', 'bar_code', 'price'];
+      const requiredParams = ['name', 'quantity', 'barcode', 'price'];
       this.util.requiredParamValidator(data, requiredParams);
 
       const product = await this.addProductService.add(data);
