@@ -18,6 +18,7 @@ import { FilterParams } from '../domain/usecases/filter-products';
 import { ListProductService } from '../services/list-product.service';
 import { FilterProductsService } from '../services/filter-product.service';
 import { LoadByIdService } from '../services/load-by-id-product.service';
+import { UpdateProductService } from '../services/update-product.service';
 
 @Controller('product')
 export class ProductController {
@@ -26,6 +27,7 @@ export class ProductController {
     private listProductService: ListProductService,
     private filterProductService: FilterProductsService,
     private loadByIdProductService: LoadByIdService,
+    private updateProductService: UpdateProductService,
     private util: Util,
   ) {}
 
@@ -78,9 +80,35 @@ export class ProductController {
     }
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateCatDto: any) {
-    return `This action updates a #${id} cat`;
+  @Put(':product_id')
+  async update(
+    @Param('product_id') productId: string,
+    @Res() res: Response,
+    @Body() data: AddProductModel,
+  ) {
+    try {
+      const requiredParams = [
+        'name',
+        'quantity',
+        'barcode',
+        'price',
+        'productId',
+      ];
+      this.util.requiredParamValidator({ ...data, productId }, requiredParams);
+
+      const inputData = {
+        ...data,
+        price: Number(data.price),
+        quantity: Number(data.quantity),
+      };
+      const product = await this.updateProductService.update(
+        productId,
+        inputData,
+      );
+      res.status(HttpStatus.CREATED).send(product);
+    } catch (error) {
+      this.util.handleError(error);
+    }
   }
 
   @Delete(':id')

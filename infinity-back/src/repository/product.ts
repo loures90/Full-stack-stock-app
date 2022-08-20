@@ -4,7 +4,7 @@ import { FilterParams } from '../domain/usecases/filter-products';
 import { ProductModel } from '../domain/model/product';
 import { AddProductModel } from '../domain/usecases/add-product';
 import mongoHelper from './mongo-helper';
-import { ObjectId, ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ProductRepository {
@@ -45,5 +45,22 @@ export class ProductRepository {
     });
     if (!product) return null;
     return mongoHelper.mapper(product);
+  }
+
+  async update(
+    productId: string,
+    data: AddProductModel,
+  ): Promise<ProductModel> {
+    console.log(data)
+    const productsCollection = await mongoHelper.getCollection('products');
+    const product = await productsCollection.findOneAndReplace(
+      {
+        _id: new ObjectId(productId),
+      },
+      { ...data },
+    );
+    console.log(product.value)
+    if (!product) return null;
+    return mongoHelper.mapper(product.value);
   }
 }
