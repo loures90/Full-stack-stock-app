@@ -1,8 +1,8 @@
 import { ProductModel } from '../model/product';
 
 export type FilterParams = {
-  gt?: string;
-  lt?: string;
+  gt?: number;
+  lt?: number;
   quantity?: string;
   price?: string;
 };

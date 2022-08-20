@@ -53,7 +53,12 @@ export class ProductController {
       if (!Object.keys(query).length) {
         products = await this.listProductService.list();
       } else {
-        products = await this.filterProductService.filter(query);
+        const inputData = {
+          ...query,
+          gt: query.gt ? Number(query.gt) : 0,
+          lt: query.lt ? Number(query.lt) : 99999999999,
+        };
+        products = await this.filterProductService.filter(inputData);
       }
       res.status(HttpStatus.OK).send(products);
     } catch (error) {

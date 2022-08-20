@@ -22,8 +22,7 @@ export class ProductRepository {
 
   async filter(filterData: FilterParams): Promise<any> {
     let filterParams;
-    filterData.gt = !filterData.gt ? '0' : filterData.gt;
-    filterData.lt = filterData.lt ? filterData.lt : '9999999999';
+
     if (filterData.price) {
       filterParams = {
         price: { $gt: filterData.gt, $lt: filterData.lt },
