@@ -34,7 +34,6 @@ export class ProductRepository {
     }
     const productsCollection = await mongoHelper.getCollection('products');
     const products = await productsCollection.find(filterParams).toArray();
-    console.log(filterParams);
     return products.map((product) => mongoHelper.mapper(product));
   }
 }
