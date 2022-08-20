@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import mongoHelper from './repository/mongo-helper';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
-}
-bootstrap();
+mongoHelper
+  .connect(process.env.MONGO_URL || 'mongodb://localhost:27017/products')
+  .then(async () => {
+    const app = await NestFactory.create(AppModule);
+    await app.listen(8080);
+  })
+  .catch(console.error);

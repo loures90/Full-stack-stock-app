@@ -3,4 +3,5 @@ export type ProductModel = {
   name: string;
   quantity: string;
   barcode: string;
+  price: string;
 };
