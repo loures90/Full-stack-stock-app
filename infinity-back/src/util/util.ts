@@ -28,4 +28,15 @@ export class Util {
     }
     throw error;
   }
+
+  HandleNotFoundError() {
+    throw new HttpException(
+      {
+        status: HttpStatus.NOT_FOUND,
+        error: 'Not found error',
+      },
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
 }

@@ -17,6 +17,7 @@ import { AddProductService } from '../services/add-product.service';
 import { FilterParams } from '../domain/usecases/filter-products';
 import { ListProductService } from '../services/list-product.service';
 import { FilterProductsService } from '../services/filter-product.service';
+import { LoadByIdService } from '../services/load-by-id-product.service';
 
 @Controller('product')
 export class ProductController {
@@ -24,6 +25,7 @@ export class ProductController {
     private addProductService: AddProductService,
     private listProductService: ListProductService,
     private filterProductService: FilterProductsService,
+    private loadByIdProductService: LoadByIdService,
     private util: Util,
   ) {}
 
@@ -66,9 +68,14 @@ export class ProductController {
     }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return `This action returns a #${id} cat`;
+  @Get(':product_id')
+  async findOne(@Param('product_id') productId: string, @Res() res: Response) {
+    try {
+      const product = await this.loadByIdProductService.load(productId);
+      res.status(HttpStatus.OK).send(product);
+    } catch (error) {
+      this.util.handleError(error);
+    }
   }
 
   @Put(':id')

@@ -4,6 +4,7 @@ import { FilterParams } from '../domain/usecases/filter-products';
 import { ProductModel } from '../domain/model/product';
 import { AddProductModel } from '../domain/usecases/add-product';
 import mongoHelper from './mongo-helper';
+import { ObjectId, ObjectID } from 'mongodb';
 
 @Injectable()
 export class ProductRepository {
@@ -35,5 +36,14 @@ export class ProductRepository {
     const productsCollection = await mongoHelper.getCollection('products');
     const products = await productsCollection.find(filterParams).toArray();
     return products.map((product) => mongoHelper.mapper(product));
+  }
+
+  async load(productId: string): Promise<ProductModel> {
+    const productsCollection = await mongoHelper.getCollection('products');
+    const product = await productsCollection.findOne({
+      _id: new ObjectId(productId),
+    });
+    if (!product) return null;
+    return mongoHelper.mapper(product);
   }
 }
