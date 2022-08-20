@@ -5,6 +5,10 @@ import { ProductRepository } from '../../repository/product';
 import { Util } from '../../util/util';
 import { ProductModel } from '../../domain/model/product';
 import { FilterProductsService } from '../../services/filter-product.service';
+import { ListProductService } from '../../services/list-product.service';
+import { LoadByIdService } from '../../services/load-by-id-product.service';
+import { UpdateProductService } from '../../services/update-product.service';
+import { DeleteProductService } from '../../services/delete-product.service';
 
 const makeFakeAddProduct = (): AddProductModel => ({
   name: 'any_name',
@@ -23,22 +27,41 @@ const makeFakeProduct = (): ProductModel => ({
 
 describe('AppController', () => {
   let addProductService: AddProductService;
+  let listProductService: ListProductService;
+  let filterProductsService: FilterProductsService;
+  let loadByIdService: LoadByIdService;
+  let updateProductService: UpdateProductService;
+  let deleteProductService: DeleteProductService;
   let productRepository: ProductRepository;
   let util: Util;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const moduleRef: TestingModule = await Test.createTestingModule({
       providers: [
         AddProductService,
+        ListProductService,
         FilterProductsService,
         ProductRepository,
+        LoadByIdService,
+        UpdateProductService,
+        DeleteProductService,
         Util,
       ],
     }).compile();
 
-    addProductService = app.get<AddProductService>(AddProductService);
-    productRepository = app.get<ProductRepository>(ProductRepository);
-    util = app.get<Util>(Util);
+    addProductService = moduleRef.get<AddProductService>(AddProductService);
+    listProductService = moduleRef.get<ListProductService>(ListProductService);
+    filterProductsService = moduleRef.get<FilterProductsService>(
+      FilterProductsService,
+    );
+    loadByIdService = moduleRef.get<LoadByIdService>(LoadByIdService);
+    updateProductService =
+      moduleRef.get<UpdateProductService>(UpdateProductService);
+    deleteProductService =
+      moduleRef.get<DeleteProductService>(DeleteProductService);
+
+    productRepository = moduleRef.get<ProductRepository>(ProductRepository);
+    util = moduleRef.get<Util>(Util);
   });
 
   describe('root', () => {

@@ -19,7 +19,7 @@ import { ListProductService } from '../services/list-product.service';
 import { FilterProductsService } from '../services/filter-product.service';
 import { LoadByIdService } from '../services/load-by-id-product.service';
 import { UpdateProductService } from '../services/update-product.service';
-import { DeleteProductService } from 'src/services/delete-product.service';
+import { DeleteProductService } from '../services/delete-product.service';
 
 @Controller('product')
 export class ProductController {

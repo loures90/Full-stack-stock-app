@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from '../repository/product';
 import { Util } from '../util/util';
-import { DeleteProduct } from 'src/domain/usecases/delete-product';
+import { DeleteProduct } from '../domain/usecases/delete-product';
 
 @Injectable()
 export class DeleteProductService implements DeleteProduct {
