@@ -47,5 +47,10 @@ describe('AppController', () => {
       await addProductService.add(fakeAddProduct);
       expect(addSpy).toHaveBeenCalledWith(fakeAddProduct);
     });
+    it('should return a product on success"', async () => {
+      const fakeAddProduct = makeFakeAddProduct();
+      const product = await addProductService.add(fakeAddProduct);
+      expect(product).toEqual(makeFakeProduct());
+    });
   });
 });
