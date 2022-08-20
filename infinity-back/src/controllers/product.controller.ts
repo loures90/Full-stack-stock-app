@@ -19,6 +19,7 @@ import { ListProductService } from '../services/list-product.service';
 import { FilterProductsService } from '../services/filter-product.service';
 import { LoadByIdService } from '../services/load-by-id-product.service';
 import { UpdateProductService } from '../services/update-product.service';
+import { DeleteProductService } from 'src/services/delete-product.service';
 
 @Controller('product')
 export class ProductController {
@@ -28,6 +29,7 @@ export class ProductController {
     private filterProductService: FilterProductsService,
     private loadByIdProductService: LoadByIdService,
     private updateProductService: UpdateProductService,
+    private deleteProductService: DeleteProductService,
     private util: Util,
   ) {}
 
@@ -111,8 +113,13 @@ export class ProductController {
     }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `This action removes a #${id} cat`;
+  @Delete(':product_id')
+  async remove(@Param('product_id') productId: string, @Res() res: Response) {
+    try {
+      const product = await this.deleteProductService.delete(productId);
+      res.status(HttpStatus.NO_CONTENT).send(product);
+    } catch (error) {
+      this.util.handleError(error);
+    }
   }
 }

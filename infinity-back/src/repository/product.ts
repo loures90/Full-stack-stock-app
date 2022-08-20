@@ -51,7 +51,7 @@ export class ProductRepository {
     productId: string,
     data: AddProductModel,
   ): Promise<ProductModel> {
-    console.log(data)
+    console.log(data);
     const productsCollection = await mongoHelper.getCollection('products');
     const product = await productsCollection.findOneAndReplace(
       {
@@ -59,8 +59,16 @@ export class ProductRepository {
       },
       { ...data },
     );
-    console.log(product.value)
+    console.log(product.value);
     if (!product) return null;
     return mongoHelper.mapper(product.value);
+  }
+
+  async delete(productId: string): Promise<boolean> {
+    const productsCollection = await mongoHelper.getCollection('products');
+    const product = await productsCollection.findOneAndDelete({
+      _id: new ObjectId(productId),
+    });
+    return true;
   }
 }

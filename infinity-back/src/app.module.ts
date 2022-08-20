@@ -7,6 +7,7 @@ import { LoadByIdService } from './services/load-by-id-product.service';
 import { ListProductService } from './services/list-product.service';
 import { Util } from './util/util';
 import { UpdateProductService } from './services/update-product.service';
+import { DeleteProductService } from './services/delete-product.service';
 
 @Module({
   imports: [],
@@ -18,6 +19,7 @@ import { UpdateProductService } from './services/update-product.service';
     ProductRepository,
     LoadByIdService,
     UpdateProductService,
+    DeleteProductService,
     Util,
   ],
 })
