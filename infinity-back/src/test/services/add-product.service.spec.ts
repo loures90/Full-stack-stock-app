@@ -3,20 +3,22 @@ import { AddProductModel } from '../../domain/usecases/add-product';
 import { AddProductService } from '../../services/add-product.service';
 import { ProductRepository } from '../../repository/product';
 import { Util } from '../../util/util';
+import { ProductModel } from '../../domain/model/product';
+import { FilterProductsService } from '../../services/filter-product.service';
 
 const makeFakeAddProduct = (): AddProductModel => ({
   name: 'any_name',
-  quantity: 'any_quantity',
+  quantity: 100,
   barcode: 'any_barcode',
-  price: '100',
+  price: 100,
 });
 
-const makeFakeProduct = (): any => ({
+const makeFakeProduct = (): ProductModel => ({
   id: 'any_id',
   name: 'any_name',
-  quantity: 'any_quantity',
+  quantity: 100,
   barcode: 'any_barcode',
-  price: '100',
+  price: 100,
 });
 
 describe('AppController', () => {
@@ -26,7 +28,12 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      providers: [AddProductService, ProductRepository, Util],
+      providers: [
+        AddProductService,
+        FilterProductsService,
+        ProductRepository,
+        Util,
+      ],
     }).compile();
 
     addProductService = app.get<AddProductService>(AddProductService);

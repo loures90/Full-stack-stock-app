@@ -6,12 +6,14 @@ import { ProductRepository } from '../../repository/product';
 import { Util } from '../../util/util';
 import mongoHelper from '../../repository/mongo-helper';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { FilterProductsService } from '../../services/filter-product.service';
+import { ListProductService } from '../../services/list-product.service';
 
 const makeFakeAddProduct = (): AddProductModel => ({
   name: 'any_name',
-  quantity: 'any_quantity',
+  quantity: 100,
   barcode: 'any_barcode',
-  price: '100',
+  price: 100,
 });
 
 describe('Product Repository', () => {
@@ -21,7 +23,13 @@ describe('Product Repository', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      providers: [AddProductService, ProductRepository, Util],
+      providers: [
+        AddProductService,
+        ListProductService,
+        FilterProductsService,
+        ProductRepository,
+        Util,
+      ],
     }).compile();
 
     addProductService = app.get<AddProductService>(AddProductService);
@@ -50,9 +58,9 @@ describe('Product Repository', () => {
       expect(product).toBeTruthy();
       expect(product.id).toBeTruthy();
       expect(product.name).toBe('any_name');
-      expect(product.quantity).toBe('any_quantity');
+      expect(product.quantity).toBe(100);
       expect(product.barcode).toBe('any_barcode');
-      expect(product.price).toBe('100');
+      expect(product.price).toBe(100);
     });
   });
 });

@@ -8,12 +8,13 @@ import { ProductRepository } from '../../repository/product';
 import { Util } from '../../util/util';
 import mongoHelper from '../../repository/mongo-helper';
 import { ProductController } from '../../controllers/product.controller';
-import { AddProductModel } from 'src/domain/usecases/add-product';
-import { ProductModel } from 'src/domain/model/product';
+import { ProductModel } from '../../domain/model/product';
+import { FilterProductsService } from '../../services/filter-product.service';
+import { ListProductService } from '../../services/list-product.service';
 
 const makeFakeAddProduct = (): any => ({
   name: 'any_name',
-  quantity: 'any_quantity',
+  quantity: '100',
   barcode: 'any_barcode',
   price: '100',
 });
@@ -21,9 +22,9 @@ const makeFakeAddProduct = (): any => ({
 const makeFakeProduct = (): ProductModel => ({
   id: 'any_id',
   name: 'any_name',
-  quantity: 'any_quantity',
+  quantity: 100,
   barcode: 'any_barcode',
-  price: '100',
+  price: 100,
 });
 
 describe('Product Repository', () => {
@@ -36,7 +37,13 @@ describe('Product Repository', () => {
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       controllers: [ProductController],
-      providers: [AddProductService, ProductRepository, Util],
+      providers: [
+        AddProductService,
+        ListProductService,
+        FilterProductsService,
+        ProductRepository,
+        Util,
+      ],
     }).compile();
 
     productController = moduleRef.get<ProductController>(ProductController);

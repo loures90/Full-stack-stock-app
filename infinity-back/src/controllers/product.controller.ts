@@ -14,11 +14,16 @@ import { Response } from 'express';
 import { Util } from '../util/util';
 import { AddProductModel } from '../domain/usecases/add-product';
 import { AddProductService } from '../services/add-product.service';
+import { FilterParams } from '../domain/usecases/filter-products';
+import { ListProductService } from '../services/list-product.service';
+import { FilterProductsService } from '../services/filter-product.service';
 
 @Controller('product')
 export class ProductController {
   constructor(
     private addProductService: AddProductService,
+    private listProductService: ListProductService,
+    private filterProductService: FilterProductsService,
     private util: Util,
   ) {}
 
@@ -28,7 +33,12 @@ export class ProductController {
       const requiredParams = ['name', 'quantity', 'barcode', 'price'];
       this.util.requiredParamValidator(data, requiredParams);
 
-      const product = await this.addProductService.add(data);
+      const inputData = {
+        ...data,
+        price: Number(data.price),
+        quantity: Number(data.quantity),
+      };
+      const product = await this.addProductService.add(inputData);
       res.status(HttpStatus.CREATED).send(product);
     } catch (error) {
       this.util.handleError(error);
@@ -36,8 +46,19 @@ export class ProductController {
   }
 
   @Get()
-  findAll(@Query() query: any) {
-    return `This action returns all cats (limit: ${query.limit} items)`;
+  async getAll(@Query() query: FilterParams, @Res() res: Response) {
+    try {
+      let products;
+
+      if (!Object.keys(query).length) {
+        products = await this.listProductService.list();
+      } else {
+        products = await this.filterProductService.filter(query);
+      }
+      res.status(HttpStatus.OK).send(products);
+    } catch (error) {
+      this.util.handleError(error);
+    }
   }
 
   @Get(':id')

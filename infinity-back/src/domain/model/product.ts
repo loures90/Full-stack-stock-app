@@ -1,7 +1,7 @@
 export type ProductModel = {
   id: string;
   name: string;
-  quantity: string;
+  quantity: number;
   barcode: string;
-  price: string;
+  price: number;
 };
