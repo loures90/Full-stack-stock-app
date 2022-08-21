@@ -28,9 +28,13 @@ export class ProductRepository {
       filterParams = {
         price: { $gt: filterData.gt, $lt: filterData.lt },
       };
-    } else {
+    } else if (filterData.price) {
       filterParams = {
         quantity: { $gt: filterData.gt, $lt: filterData.lt },
+      };
+    } else {
+      filterParams = {
+        name: { $regex: filterData.name },
       };
     }
     const productsCollection = await mongoHelper.getCollection('products');
