@@ -6,7 +6,7 @@ import Product from '../../Components/Product/Product'
 import Filter from '../../Components/Filter/Filter'
 import { goToProductPage } from '../../Router/Coordinator'
 
-const Home = () => {
+const Home = (props) => {
   const [products, setProducts] = GetProducts([], `${BASE_URL}/product`)
   const navigate = useNavigate()
 
@@ -16,7 +16,7 @@ const Home = () => {
     <Filter setProducts={setProducts}/>
     <div>
       {!products && <div>...Loading</div>}
-      {products && products[0] && products.map(product => (<Product key={product.id} product={product} />))}
+      {products && products[0] && products.map(product => (<Product key={product.id} product={product} setProducts={setProducts} productToUpdate={props.productToUpdate} setProductToUpdate={props.setProductToUpdate}/>))}
     </div>
   </div>)
 }

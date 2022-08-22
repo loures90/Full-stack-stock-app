@@ -26,21 +26,20 @@ export const CreateProduct = (body, clearFields, setMessage) => {
 }
 
 
-export const UpdateProduct = (id, body) => {
-  body = { ...body, name: 'new_product' }
-  delete body.id
+export const UpdateProduct = (id, body, setMessage) => {
   axios.put(`${BASE_URL}/product/${id}`, body)
-    .then(()=>{
-      GetProducts([], `${BASE_URL}/product`)
-    })
-    .catch(console.error())
+  .then(()=>{
+    setMessage('ok')
+  })
+  .catch(() => {
+    setMessage('wrong')
+  })
 }
 
 
 export const DeleteProduct = (id) => {
   axios.delete(`${BASE_URL}/product/${id}`)
     .then(() => {
-      GetProducts([], `${BASE_URL}/product`)
     })
     .catch(console.error())
 }

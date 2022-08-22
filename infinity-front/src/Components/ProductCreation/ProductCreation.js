@@ -2,16 +2,16 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useForm from '../../Hooks/useForm'
 import { goToHomePage } from '../../Router/Coordinator'
-import { CreateProduct } from '../../Services/products'
+import { CreateProduct, UpdateProduct } from '../../Services/products'
 
-const ProductCreation = () => {
+const ProductCreation = (props) => {
   const [message, setMessage] = useState(0)
   const navigate = useNavigate()
   const [form, onChange, clearFields] = useForm({
-    name: "",
-    quantity: "",
-    price: "",
-    barcode: ""
+    name: props.productToUpdate ? props.productToUpdate.name : "",
+    quantity: props.productToUpdate ? props.productToUpdate.quantity : "",
+    price: props.productToUpdate ? props.productToUpdate.price : "",
+    barcode: props.productToUpdate ? props.productToUpdate.barcode : ""
   })
 
   const create = () => {
@@ -23,9 +23,23 @@ const ProductCreation = () => {
     }
     CreateProduct(body, clearFields, setMessage)
   }
+
+  const update = () => {
+    const body = {
+      name: form.name,
+      quantity: form.quantity,
+      price: form.price,
+      barcode: form.barcode
+    }
+    UpdateProduct(props.productToUpdate.id, body, setMessage)
+  }
   return (<div>
-    <h3>Create Product</h3>
-    <button onClick={() => goToHomePage(navigate)}>Lista de Produtos</button>
+    {!props.productToUpdate && <h3 >Criar Novo Produto</h3>}
+    {props.productToUpdate && <h3 >Atualizar Produto</h3>}
+    <button onClick={() => {
+      props.setProductToUpdate && props.setProductToUpdate({})
+      goToHomePage(navigate)
+    }}>Lista de Produtos</button>
 
     <div>
       <label>Nome</label>
@@ -44,7 +58,8 @@ const ProductCreation = () => {
       <input onChange={onChange} value={form.barcode} type="text" id="barcode" name="barcode"></input>
     </div>
     <div>
-      <button onClick={() => create()}>Novo Produto</button>
+      {!props.productToUpdate && <button onClick={() => create()}>Novo Produto</button>}
+      {props.productToUpdate && <button onClick={() => update()}>Atualizar Produto</button>}
     </div>
     {message === 'ok' && <p>Produto salvo com sucesso</p>}
     {message === 'wrong' && <p>Produto não salvo corretamente</p>}
