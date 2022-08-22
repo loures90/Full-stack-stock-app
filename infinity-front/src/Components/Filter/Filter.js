@@ -7,7 +7,7 @@ import { Container } from '@mui/system'
 
 const Filter = (props) => {
   const [message, setMessage] = ('')
-  const [form, onChange, clearFields] = useForm({
+  const [form, onChange] = useForm({
     name: "",
     quantity: "",
     maxQuantity: "",
