@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mongo:
+    container_name: mongo-container-infinity
+    image: mongo:3
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+  nodejs-server:
+    build:
+      context: ./infinity-back
+    ports:
+      - "8080:8080"
+    container_name: node-api
+    volumes:
+       - ./infinity-back:/usr/src/app/api
+       - /usr/src/app/api/node_modules
+    links:
+      - mongo
+  react-ui:
+    build:
+      context: ./infinity-front
+    ports:
+      - "3000:3000"
+    container_name: react-ui
+    stdin_open: true
+    volumes:
+       - ./infinity-front:/usr/src/app/my-app
+    links:
+      - mongo
+      - nodejs-server
