@@ -1,12 +1,20 @@
+import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material';
+
 import { useState } from 'react';
 import Router from './Router/Router';
 
-function App() {
+function App () {
   const [productToUpdate, setProductToUpdate] = useState({})
   return (
-    <div>
-      <Router productToUpdate={productToUpdate} setProductToUpdate={setProductToUpdate}/>
-    </div>
+    <>
+      <CssBaseline />
+      <AppBar position="relative">
+        <Toolbar>
+          <Typography variant="h6">Estoque</Typography>
+        </Toolbar>
+      </AppBar>
+      <Router productToUpdate={productToUpdate} setProductToUpdate={setProductToUpdate} />
+    </>
   );
 }
 

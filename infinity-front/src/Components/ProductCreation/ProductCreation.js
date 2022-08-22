@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Container, Typography, Button, Grid, TextField } from '@mui/material'
+
+
 import useForm from '../../Hooks/useForm'
 import { goToHomePage } from '../../Router/Coordinator'
 import { CreateProduct, UpdateProduct } from '../../Services/products'
@@ -33,36 +36,66 @@ const ProductCreation = (props) => {
     }
     UpdateProduct(props.productToUpdate.id, body, setMessage)
   }
-  return (<div>
-    {!props.productToUpdate && <h3 >Criar Novo Produto</h3>}
-    {props.productToUpdate && <h3 >Atualizar Produto</h3>}
-    <button onClick={() => {
-      props.setProductToUpdate && props.setProductToUpdate({})
-      goToHomePage(navigate)
-    }}>Lista de Produtos</button>
+  return (
+    <Container>
+      {!props.productToUpdate && <Typography sx={{ pt: 2 }} variant="h3" align="center" color="textPrimary" gutterBottom>Criar Produto</Typography>}
+      {props.productToUpdate && <Typography sx={{ pt: 2 }} variant="h3" align="center" color="textPrimary" gutterBottom>Atualizar Produto</Typography>}
 
-    <div>
-      <label>Nome</label>
-      <input onChange={onChange} value={form.name} type="text" id="name" name="name"></input>
-    </div>
-    <div>
-      <label >Quantidade</label>
-      <input onChange={onChange} value={form.quantity} type="text" id="quantity" name="quantity"></input>
-    </div>
-    <div>
-      <label >Preço</label>
-      <input onChange={onChange} value={form.price} type="text" id="price" name="price"></input>
-    </div>
-    <div>
-      <label >Código de barras</label>
-      <input onChange={onChange} value={form.barcode} type="text" id="barcode" name="barcode"></input>
-    </div>
-    <div>
-      {!props.productToUpdate && <button onClick={() => create()}>Novo Produto</button>}
-      {props.productToUpdate && <button onClick={() => update()}>Atualizar Produto</button>}
-    </div>
-    {message === 'ok' && <p>Produto salvo com sucesso</p>}
-    {message === 'wrong' && <p>Produto não salvo corretamente</p>}
-  </div>)
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <TextField
+            label="Nome"
+            helperText="Nome do produto"
+            fullWidth
+            onChange={onChange} value={form.name} type="text" id="name" name="name"
+          />
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <TextField
+            label="Quantidade"
+            helperText="Quantidade no Estoque"
+            fullWidth
+            onChange={onChange} value={form.quantity} type="text" id="quantity" name="quantity"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            label="Preço"
+            helperText="Preço do produto"
+            fullWidth
+            onChange={onChange} value={form.price} type="text" id="price" name="price"
+          />
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <TextField
+            label="Código de barras"
+            helperText="Código de barras"
+            fullWidth
+            onChange={onChange} value={form.barcode} type="text" id="barcode" name="barcode"
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} >
+        <Grid item xs={6}>
+          {!props.productToUpdate && <Button variant="contained" onClick={() => create()}>Novo Produto</Button>}
+          {props.productToUpdate && <Button variant="contained" onClick={() => update()}>Atualizar Produto</Button>}
+        </Grid>
+        <Grid item xs={6}>
+          <Button onClick={() => {
+            props.setProductToUpdate && props.setProductToUpdate({})
+            goToHomePage(navigate)
+          }}>Lista de Produtos</Button>
+        </Grid>
+      </Grid>
+
+      {message === 'ok' && <p>Produto salvo com sucesso</p>}
+      {message === 'wrong' && <p>Produto não salvo corretamente</p>}
+    </Container>)
 }
 export default ProductCreation
