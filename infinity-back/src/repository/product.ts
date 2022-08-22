@@ -28,7 +28,7 @@ export class ProductRepository {
       filterParams = {
         price: { $gt: filterData.gt, $lt: filterData.lt },
       };
-    } else if (filterData.price) {
+    } else if (filterData.quantity) {
       filterParams = {
         quantity: { $gt: filterData.gt, $lt: filterData.lt },
       };
@@ -63,7 +63,6 @@ export class ProductRepository {
       },
       { ...data },
     );
-    console.log(product.value);
     if (!product) return null;
     return mongoHelper.mapper(product.value);
   }
